@@ -1,0 +1,64 @@
+# izymodtask
+Node.js modtask component for Izyware.
+
+## INSTALLATION
+
+If you are using npm (the Node.js package manager) always ensure that your npm is up-to-date by running:
+
+`npm update -g npm`  
+
+Then use:
+
+`npm install izymodtask`
+
+## USING THE TOOL
+
+This tool provides libraries for traditional modtask izyware apps. You may use the libraries by referencing the node_modules folder.
+
+When integrating izyware modtask style components to native node runtime apps and you need to ldmod on a module, you can:
+
+```
+
+var mod = require('izymodtask').getRootModule().ldmod('path_to_module');
+
+```
+
+To see what the module resolution paths are for the context that you are using the code above, you can always use:
+
+```
+
+require('izymodtask').getRootModule().ldmod('s_root').cmdlineverbs.sysview();
+
+```
+
+
+If you need to launch cmdline based verbs from the node app, use the following syntax:
+
+```
+
+require('izymodtask').runCmd('sysview -- or your verb --')
+
+```
+
+When the verb is called inside the `g_handler` module, you can extract the command line config by:
+
+```
+
+modtask.cmdlineverbs.method = function() {
+   var config = modtask.ldmod('izymodtask/index').extractConfigFromCmdLine('method');
+	 ...
+
+```
+
+You can customize the izyware modtask search path by creating the following:
+
+```
+
+modtask/config/kernel/extstores/file.js
+
+```
+
+in the root of your node app.
+
+## NOTE
+for more details, visit https://izyware.com

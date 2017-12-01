@@ -1,0 +1,98 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "izymodtask@^1.0.0",
+        "scope": null,
+        "escapedName": "izymodtask",
+        "name": "izymodtask",
+        "rawSpec": "^1.0.0",
+        "spec": ">=1.0.0 <2.0.0",
+        "type": "range"
+      },
+      "/plat/p/izy-sync"
+    ]
+  ],
+  "_from": "izymodtask@>=1.0.0 <2.0.0",
+  "_id": "izymodtask@1.0.3",
+  "_inCache": true,
+  "_location": "/izymodtask",
+  "_nodeVersion": "6.9.4",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/izymodtask-1.0.3.tgz_1503796690386_0.5306058907881379"
+  },
+  "_npmUser": {
+    "name": "izyware",
+    "email": "contact@izyware.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "izymodtask@^1.0.0",
+    "scope": null,
+    "escapedName": "izymodtask",
+    "name": "izymodtask",
+    "rawSpec": "^1.0.0",
+    "spec": ">=1.0.0 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/izymodtask/-/izymodtask-1.0.3.tgz",
+  "_shasum": "67bac3787d290c515b3c2b011516286fb289155f",
+  "_shrinkwrap": null,
+  "_spec": "izymodtask@^1.0.0",
+  "_where": "/plat/p/izy-sync",
+  "author": {
+    "name": "http://izyware.com"
+  },
+  "dependencies": {},
+  "description": "modtask components for Izyware",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "67bac3787d290c515b3c2b011516286fb289155f",
+    "tarball": "https://registry.npmjs.org/izymodtask/-/izymodtask-1.0.3.tgz"
+  },
+  "files": [
+    "README",
+    "index.js",
+    "ljs.js",
+    "kernel",
+    "encodedecode",
+    "storage",
+    "core",
+    "host",
+    "net",
+    "qry",
+    "ui",
+    "sql"
+  ],
+  "keywords": [
+    "izy",
+    "izyware",
+    "tools",
+    "modtask"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "izyware",
+      "email": "contact@izyware.com"
+    }
+  ],
+  "name": "izymodtask",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/izymodtask/"
+  },
+  "scripts": {
+    "test": ""
+  },
+  "version": "1.0.16"
+}
