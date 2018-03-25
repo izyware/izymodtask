@@ -57,3 +57,19 @@ var modtask =
 	   return depname;
    }     
 }
+
+modtask.parseInvokeString = function(path) {
+	var pkg = path.split(':');
+	var mod, params = '';
+	if (pkg.length) {
+		mod = pkg[0] + '/' + pkg[1];
+		pkg = pkg[0];
+		params = path.substr(mod.length+1);
+	} else {
+		pkg = '';
+		mod = path;
+		params = '';
+	}
+	return { path: path, pkg: pkg, mod: mod, params: params };
+}
+
