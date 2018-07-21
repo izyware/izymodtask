@@ -59,7 +59,10 @@ var modtask =
 }
 
 modtask.parseInvokeString = function(path) {
-	var pkg = path.split(':');
+	var pkg = '';
+	if (path.indexOf(':') >= 0) {
+		pkg = path.split(':');
+	};
 	var mod, params = '';
 	if (pkg.length) {
 		mod = pkg[0] + '/' + pkg[1];
@@ -71,5 +74,44 @@ modtask.parseInvokeString = function(path) {
 		params = '';
 	}
 	return { path: path, pkg: pkg, mod: mod, params: params };
+}
+
+modtask.toInvokeString = function(path) {
+	if (!path) path = modtask.__modtask.__myname;
+	if (path.indexOf("rel:") == 0) path = modtask.rel(path.substr(4, path.length-4));
+	// already in the pkg:view/top format
+	if (path.indexOf(':') > 0) {
+		return {
+			success: true,
+			data: path
+		};
+	}
+
+	try {
+		var modToPkgMap = modtask.ldmod('kernel/mod').ldonce('kernel/extstores/import').modToPkgMap || {};
+		var p;
+		for (p in modToPkgMap) {
+			if (p == path || p.replace(/:/g) == path) {
+				var pkg = modToPkgMap[p];
+				path = path.substr(pkg.length + 1);
+				path = pkg + ':' + path;
+				return {
+					success: true,
+					data: path
+				}
+			}
+		}
+
+		return {
+			success: false,
+			reason: 'Cannot determine that pkg for ' + path + ' automatically.'
+		};
+
+	} catch (e) {
+		return {
+			success: false,
+			reason: 'There was an error using kernel/extstores/import modToPkgMap. Make sure kernerl/extstores/import is available.'
+		};
+	}
 }
 
