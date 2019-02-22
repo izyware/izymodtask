@@ -58,6 +58,7 @@
   },
   "files": [
     "README",
+    "README.md",
     "index.js",
     "ljs.js",
     "kernel",

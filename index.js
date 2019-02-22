@@ -1,6 +1,18 @@
 
 var modtask = {};
 
+modtask.relRequire = function(modname) {
+  var currentPath = modtask.__modtask.__loadObject2Path || '';
+  currentPath = currentPath.split('/');
+  var fullpath = '';
+  var i;
+  for(i=0; i < currentPath.length - 1; ++i) {
+    fullpath += currentPath[i] + '/';
+  }
+  fullpath += modname;
+  return require(fullpath);
+}
+
 modtask.extractConfigFromCmdLine = function() {
   var config = null;
   var prop = false;
