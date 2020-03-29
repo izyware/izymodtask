@@ -13,27 +13,27 @@ modtask.relRequire = function(modname) {
   return require(fullpath);
 }
 
-modtask.extractConfigFromCmdLine = function() {
+modtask.extractConfigFromCmdLine = function(params) {
   var config = null;
   var prop = false;
 
-  var params = ['node', 'cli.js'];
-  params.push('method');
-
-  var cmdParams;
-
-  if (__izywareEmbeddedObject.params) {
-    cmdParams = __izywareEmbeddedObject.params;
-    //  cmdParams.shift();
-    for(i=0; i < cmdParams.length; ++i)
-      params.push(cmdParams[i]);
-  } else {
-    cmdParams = process.argv[2].split('__SLSH__');
-    cmdParams.shift();
-    cmdParams.shift();
-    var i;
-    for(i=0; i < cmdParams.length; ++i)
-      params.push(cmdParams[i].split('=')[1]);
+  if (!params) {
+    params = ['node', 'cli.js'];
+    params.push('method');
+    var cmdParams;
+    if (__izywareEmbeddedObject.params) {
+      cmdParams = __izywareEmbeddedObject.params;
+      //  cmdParams.shift();
+      for (i = 0; i < cmdParams.length; ++i)
+        params.push(cmdParams[i]);
+    } else {
+      cmdParams = process.argv[2].split('__SLSH__');
+      cmdParams.shift();
+      cmdParams.shift();
+      var i;
+      for (i = 0; i < cmdParams.length; ++i)
+        params.push(cmdParams[i].split('=')[1]);
+    }
   }
 
   params.forEach(function (val, index, array) {
@@ -51,7 +51,9 @@ modtask.extractConfigFromCmdLine = function() {
   });
 
   config = modtask.flatToJSON(config);
-  return config;
+  var outcome = modtask.expandStringEncodedConfigValues(config);
+  outcome.data = config;
+  return outcome;
 }
 
 // convert x.y.z to x: { y: { z ...
@@ -78,6 +80,32 @@ modtask.flatToJSON = function(obj) {
   return ret;
 }
 
+modtask.expandStringEncodedConfigValues = function(config, outcome) {
+  if (!outcome) outcome = {};
+  var p;
+  for(p in config) {
+    switch(typeof(config[p])) {
+      case 'string':
+        var token = 'json:';
+        if (config[p].indexOf(token) == 0) {
+          try {
+            config[p] = JSON.parse(config[p].substr(token.length, config[p].length - token.length));
+          } catch(e) {
+            outcome.success = false;
+            outcome.reason = 'cannot parse ' + config[p] + ': ' + e.message;
+            return outcome;
+          }
+        }
+        break;
+      case 'object':
+        modtask.expandStringEncodedConfigValues(config[p], outcome);
+        if (!outcome.success) return outcome;
+        break;
+    }
+  }
+  outcome.success = true;
+  return outcome;
+}
 
 modtask.get_ljs_path = function() {
   return __dirname + '/ljs.js';
