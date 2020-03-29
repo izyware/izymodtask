@@ -123,7 +123,10 @@ modtask.getRootModule = function(dir) {
 }
 
 modtask.getKernel = function() {
-  return require(modtask.get_ljs_path());
+  var path = modtask.get_ljs_path();
+  if (require.cache && require.resolve)
+    delete require.cache[require.resolve(path)];
+  return require(path);
 }
 
 modtask.runCmd = function(_cmd) {
