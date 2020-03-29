@@ -83,24 +83,19 @@ modtask.get_ljs_path = function() {
   return __dirname + '/ljs.js';
 }
 
-modtask.getRootModule = function() {
+modtask.getRootModule = function(dir) {
+  var props = {};
+  props.__contextualName = dir + '/__contextualName_for_Root';
+  props.__rootPathForAnchorDirectory = modtask.get_ljs_path();
   var mod = modtask.getKernel().rootModule.usermodule;
-  mod.setupSystem();
+  for(var p in props) {
+    mod[p] = props[p];
+  }
   return mod;
 }
 
 modtask.getKernel = function() {
-  var fs = require('fs');
-  var __izywareEmbeddedObject = fs.readFileSync(modtask.get_ljs_path());
-  process.argv.shift();
-  process.argv.shift();
-  process.argv.shift();
-  __izywareEmbeddedObject = 'var __izywareEmbeddedObject = { params: ' +  JSON.stringify(process.argv)  + '}; ' + __izywareEmbeddedObject;
-  __izywareEmbeddedObject += `; 
-    onSystemStart({'overridehostingmodule' : 'host\\\\nodejs\\\\base', 'platobject' : process });
-  `;
-  eval(__izywareEmbeddedObject);
-  return Kernel;
+  return require(modtask.get_ljs_path());
 }
 
 modtask.runCmd = function(_cmd) {
