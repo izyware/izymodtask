@@ -19,16 +19,35 @@ var modtask =
 	},
 
 	parse : function(path) {
-		path = path + "";
-		path = path.replace(/[A-Za-z0-9]+\\\.\.\\/g, ""); 
+		return modtask.normalize(path);
+	},
+
+	normalize : function(path) {
+		path = path + '';
+		var slashbased = path.indexOf('/') >= 0;
+		if (slashbased) {
+			path = path.replace(/\//g, '\\');
+		}
+		path = path.replace(/[A-Za-z0-9]+\\\.\.\\/g, '');
+		if (slashbased) {
+			path = path.replace(/\\/g, '/');
+		}
 		return path; 
 	},		
 
-	rel : function(rp, modulename) {
+	rel : function(rp, modulenameOrMod, useModuleContextForPath) {
+		var modulename = modulenameOrMod;
+		if (useModuleContextForPath) {
+			if (modulenameOrMod.__contextualName) {
+				modulename = modulenameOrMod.__contextualName;
+			} else {
+				modulename = modulenameOrMod.__myname;
+			}
+		}
 
 		if (!modulename) modulename = modtask.__modtask.__myname;
-
-		var slashbased = (rp.indexOf('/') > 0 || modulename.indexOf('/') > 0);
+		
+		var slashbased = (rp.indexOf('/') >= 0 || modulename.indexOf('/') >= 0);
 		rp = rp.replace(/\//g, "\\"); 
 		modulename = (modulename+"").replace(/\//g, "\\"); 
  
@@ -40,19 +59,21 @@ var modtask =
 		var base = modtask.get(modulename, depth); 
 		base = base + rp; 
 		base = base.replace(/\//g, "\\"); 
-	   	base = modtask.parse(base);
+	  base = modtask.parse(base);
 		if (slashbased) {
 			base = base.replace(/\\/g, '/');
 		}
 		return base;
    },
 
-   resolve : function(modulename, depname) {
+   resolve : function(modulenameOrMod, depname, useModuleContextForPath) {
       if (depname == "_data") {
-         depname = modtask.rel("data", modulename); 
+         depname = modtask.rel("data", modulenameOrMod);
       }
       else if (depname.indexOf("rel:") == 0) {
-         depname = modtask.rel(depname.substr(4, depname.length-4), modulename);
+         depname = modtask.rel(depname.substr(4, depname.length-4),
+	         modulenameOrMod,
+	         useModuleContextForPath);
       }
 	   return depname;
    }     
@@ -104,7 +125,7 @@ modtask.toInvokeString = function(path) {
 
 		return {
 			success: false,
-			reason: 'Cannot determine that pkg for ' + path + ' automatically.'
+			reason: '[toInvokeString] Cannot determine package name for "' + path + '" automatically.'
 		};
 
 	} catch (e) {

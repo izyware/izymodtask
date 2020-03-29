@@ -10,13 +10,13 @@ modtask.__rootPathForAnchorDirectory = null;
 modtask.verbose = {
   startup: false,
   setupSelectors: false,
-  loadObject2: false,
+  loadObject: false,
   objectExist: false,
-  loadModuleInModtask: false,
   iterateStoreChain: false,
   getObjectPath: false,
   iteratePathsToSearch: false
 };
+
 if (modtask.verbose.startup) console.log('entrypoint');
 
 /************** Kernel Interfaces ****************/
