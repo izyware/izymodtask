@@ -28,7 +28,7 @@ var modtask =
 		if (slashbased) {
 			path = path.replace(/\//g, '\\');
 		}
-		path = path.replace(/[A-Za-z0-9]+\\\.\.\\/g, '');
+		path = path.replace(/[A-Za-z0-9-]+\\\.\.\\/g, '');
 		if (slashbased) {
 			path = path.replace(/\\/g, '/');
 		}
