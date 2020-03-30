@@ -113,6 +113,7 @@ modtask.get_ljs_path = function() {
 
 modtask.getRootModule = function(dir) {
   var props = {};
+  if (!dir) dir = __dirname;
   props.__contextualName = dir + '/__contextualName_for_Root';
   props.__rootPathForAnchorDirectory = modtask.get_ljs_path();
   var mod = modtask.getKernel().rootModule.usermodule;
