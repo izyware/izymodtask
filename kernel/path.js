@@ -97,7 +97,7 @@ modtask.parseInvokeString = function(path) {
 	return { path: path, pkg: pkg, mod: mod, params: params };
 }
 
-modtask.toInvokeString = function(path) {
+modtask.toInvokeString = function(path, _modToPkgMap) {
 	if (!path) path = modtask.__modtask.__myname;
 	if (path.indexOf("rel:") == 0) path = modtask.rel(path.substr(4, path.length-4));
 	// already in the pkg:view/top format
@@ -108,31 +108,36 @@ modtask.toInvokeString = function(path) {
 		};
 	}
 
-	try {
-		var modToPkgMap = modtask.ldmod('kernel/mod').ldonce('kernel/extstores/import').modToPkgMap || {};
-		var p;
-		for (p in modToPkgMap) {
-			if (p == path || p.replace(/:/g) == path) {
-				var pkg = modToPkgMap[p];
-				path = path.substr(pkg.length + 1);
-				path = pkg + ':' + path;
-				return {
-					success: true,
-					data: path
+	var maps = [
+		modtask.ldmod('kernel/mod').ldonce('kernel/extstores/import').modToPkgMap,
+		_modToPkgMap
+	];
+
+	for (var q in maps) {
+		try {
+			var map = maps[q] || {};
+			var p;
+			for (p in map) {
+				if (p == path || p.replace(/:/g) == path) {
+					var pkg = map[p];
+					path = path.substr(pkg.length + 1);
+					path = pkg + ':' + path;
+					return {
+						success: true,
+						data: path
+					}
 				}
 			}
+		} catch (e) {
+			return {
+				success: false,
+				reason: 'There was an error using kernel/extstores/import modToPkgMap. Make sure kernerl/extstores/import is available.'
+			};
 		}
-
-		return {
-			success: false,
-			reason: '[toInvokeString] Cannot determine package name for "' + path + '" automatically.'
-		};
-
-	} catch (e) {
-		return {
-			success: false,
-			reason: 'There was an error using kernel/extstores/import modToPkgMap. Make sure kernerl/extstores/import is available.'
-		};
 	}
+	return {
+		success: false,
+		reason: '[toInvokeString] Cannot determine package name for "' + path + '" automatically.'
+	};
 }
 
