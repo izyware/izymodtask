@@ -7,6 +7,7 @@ var modtask = function() {}
 // Set from the index.js file
 modtask.__contextualName = null;
 modtask.__rootPathForAnchorDirectory = null;
+modtask.__moduleSearchPaths = [];
 modtask.verbose = {
   startup: false,
   setupSelectors: false,
@@ -57,6 +58,11 @@ modtask.servicecallback = function(evt) {
 
 modtask.getRootPathIfAny = function() {
   return modtask.__rootPathForAnchorDirectory;
+}
+
+// kernel/extstores/file uses this iteratePathsToSearch
+modtask.getModuleSearchPaths = function() {
+  return modtask.__moduleSearchPaths;
 }
 
 /* ^^^^^^^^^^^^^ usermodule Interfaces ^^^^^^^^^^^^^*/

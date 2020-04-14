@@ -111,11 +111,16 @@ modtask.get_ljs_path = function() {
   return __dirname + '/ljs.js';
 }
 
-modtask.getRootModule = function(dir) {
+modtask.getRootModule = function(dir, __moduleSearchPaths) {
   var props = {};
   if (!dir) dir = __dirname;
   props.__contextualName = dir + '/__contextualName_for_Root';
   props.__rootPathForAnchorDirectory = modtask.get_ljs_path();
+  if (!__moduleSearchPaths)
+    __moduleSearchPaths = [];
+
+  __moduleSearchPaths.push(dir + '/');
+  props.__moduleSearchPaths = __moduleSearchPaths;
   var mod = modtask.getKernel().rootModule.usermodule;
   for(var p in props) {
     mod[p] = props[p];

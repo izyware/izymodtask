@@ -108,6 +108,10 @@ for more details, visit https://izyware.com
 # Change Log
 
 # V5
+* implement support for code based module search path definition
+    * Kernel.rootModule.usermodule.getModuleSearchPaths was added
+    * rootModule can now take an array
+    * this will make the modtask/... kernel/extstores/file optional and allow more flexibility in reusing existing modules in different contexts
 * implement _modToPkgMap for kernel/path.toInvokeString
 * implement expandStringEncodedConfigValues to allow passing complex JSON objects at commandline
 * add stacktrace to module load errors
