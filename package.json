@@ -77,7 +77,7 @@
     "tools",
     "modtask"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "main": "index.js",
   "maintainers": [
     {
